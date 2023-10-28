@@ -64,11 +64,8 @@ kmain :: proc "sysv" () {
         cpu.halt_catch_fire()
     }
     limine_terminal := limine_terminal_stream(limine_terminal_rq.response)
-    limine_terminal_write(&limine_terminal, transmute([]u8) string("Hellope!\n"))
+    stream.write_fmt(&limine_terminal, "Hello, world I have {0b} friends", 65)
     runtime.set_error_stream(limine_terminal)
     // Create the error output stream out of limine terminal
-    buf: [4]u8 = {1,2,3,4}
-    i := 5
-    _ = buf[1:i]
     cpu.halt_catch_fire()
 }

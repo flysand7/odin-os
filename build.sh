@@ -28,7 +28,6 @@ odin build kernel                     \
     -strict-style                     \
     -disallow-do                      \
     -no-threaded-checker              \
-    -no-rtti                          \
     -max-error-count:5
 if [ $? -ne 0 ]; then
     exit 1
