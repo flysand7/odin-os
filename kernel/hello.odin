@@ -1,6 +1,0 @@
-
-package kernel
-
-main :: proc() {
-    
-}

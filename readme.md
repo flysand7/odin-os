@@ -7,3 +7,9 @@ you see this it's already outdated.
 
 This kernel uses [limine v3.0](https://github.com/limine-bootloader/limine/tree/v3.0-branch) bootloader for booting.
 I personally know it as breaking the compatibility a lot so I picked up a fairly old version for stability.
+
+## Requirements
+
+- `dosfstools`
+- `make`
+- probably some stuff like gcc and clang for building limine
