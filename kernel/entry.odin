@@ -2,16 +2,9 @@
 package kernel
 
 import "limine"
-
-// CPU functions
-@(require)
-foreign import cpu "cpu/cpu.asm"
-
-@(default_calling_convention="sysv")
-foreign cpu {
-    enable_sse      :: proc() ---
-    halt_catch_fire :: proc() -> ! ---
-}
+import "kernel:cpu"
+import "kernel:stream"
+import "kernel:runtime"
 
 // Odin runtime functions. You can see an example in core:runtime,
 // but basically they initialize the global variables and call @(init)
@@ -40,6 +33,19 @@ limine_memmap_rq := limine.Memmap_Request {
     revision = 0,
 }
 
+limine_terminal_write :: proc(iostream: ^stream.IO_Stream, buf: []u8) #no_bounds_check {
+    terminal_response := cast(^limine.Terminal_Response) iostream.payload
+    terminal_response.write(terminal_response.terminals[0], raw_data(buf), cast(u64) len(buf))
+}
+
+limine_terminal_stream :: proc(term_response: ^limine.Terminal_Response)->stream.IO_Stream {
+    error_stream := stream.IO_Stream{}
+    error_stream.flags |= {.Write}
+    error_stream.write = limine_terminal_write
+    error_stream.payload = cast(rawptr) term_response
+    return error_stream
+}
+
 @(export, link_name="_start")
 kmain :: proc "sysv" () {
     // Odin will not be able to work without SSE, so we enable it
@@ -48,18 +54,21 @@ kmain :: proc "sysv" () {
     // Even if we don't directly use SSE, Odin uses it by default
     // on struct initializers, like `context` below, and as of now
     // there's no way to disable it.
-    enable_sse()
+    cpu.enable_sse()
     context = {}
     // Initialize our globals and call @init functions
     #force_no_inline _startup_runtime()
     // Get the terminal and try writing a message
     if limine_terminal_rq.response == nil || limine_terminal_rq.response.terminal_count < 1 {
         // If we didn't get a terminal from limine there's not much else we can do
-        halt_catch_fire()
+        cpu.halt_catch_fire()
     }
-    str := string("Hellope!")
-    terminal_rs := limine_terminal_rq.response
-    terminal := limine_terminal_rq.response.terminals[0]
-    terminal_rs.write(terminal, cast([^]u8) raw_data(str), cast(u64) len(str))
-    halt_catch_fire()
+    limine_terminal := limine_terminal_stream(limine_terminal_rq.response)
+    limine_terminal_write(&limine_terminal, transmute([]u8) string("Hellope!\n"))
+    runtime.set_error_stream(limine_terminal)
+    // Create the error output stream out of limine terminal
+    buf: [4]u8 = {1,2,3,4}
+    i := 5
+    _ = buf[1:i]
+    cpu.halt_catch_fire()
 }
