@@ -26,7 +26,7 @@ bounds_check_error :: proc "contextless" (file: string, line, column: i32,
     stream.write_int(&g_error_stream, column)
     stream.write_str(&g_error_stream, "): Bounds check error [")
     stream.write_int(&g_error_stream, index)
-    stream.write_str(&g_error_stream, "] < [")
+    stream.write_str(&g_error_stream, "] >= [")
     stream.write_int(&g_error_stream, count)
     stream.write_str(&g_error_stream, "]\n")
     cpu.halt_catch_fire()
