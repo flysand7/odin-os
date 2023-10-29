@@ -1,5 +1,7 @@
 #!/bin/bash
 
 qemu-system-x86_64 \
-    -drive file=disk.raw,index=0,media=disk \
-    -bios /usr/share/edk2/x64/OVMF.fd
+    -m 512M \
+    -drive file=disk.raw,index=0,media=disk,format=raw \
+    -bios ovmf/ovmf_x64.fd \
+    -net none

@@ -1,6 +1,8 @@
 
 package kernel
 
+import odin_runtime "core:runtime"
+
 import "limine"
 import "kernel:cpu"
 import "kernel:stream"
@@ -48,6 +50,7 @@ limine_terminal_stream :: proc(term_response: ^limine.Terminal_Response)->stream
 
 @(export, link_name="_start")
 kmain :: proc "sysv" () {
+    odin_runtime.g_bounds_error_report_proc = nil
     // Odin will not be able to work without SSE, so we enable it
     // right away. There's performance costs to that later on, but
     // we'll ignore that for now
