@@ -10,6 +10,7 @@ make limine-version
 cd ..
 
 # Compile our kernel
+export ODIN_ROOT=kernel
 echo "==> Compiling the kernel"
 odin build kernel                     \
     -out:bin/kernel                   \
@@ -28,6 +29,7 @@ odin build kernel                     \
     -strict-style                     \
     -disallow-do                      \
     -no-threaded-checker              \
+    -no-rtti                          \
     -max-error-count:5
 if [ $? -ne 0 ]; then
     exit 1
