@@ -6,6 +6,7 @@ package kernel
 import "limine"
 import "kernel:cpu"
 import "core:io"
+import "core:runtime"
 
 // Odin runtime functions. You can see an example in core:runtime,
 // but basically they initialize the global variables and call @(init)
@@ -64,7 +65,11 @@ kmain :: proc "sysv" () {
         // If we didn't get a terminal from limine there's not much else we can do
         cpu.halt_catch_fire()
     }
-    // limine_terminal := limine_terminal_stream(limine_terminal_rq.response)
+    limine_terminal := limine_terminal_stream(limine_terminal_rq.response)
+    runtime.g_error_out = limine_terminal
+    a: [4]i32
+    b := a[:]
+    b[5] = 0
     // stream.write_fmt(&limine_terminal, "Hello, world I have {0b} friends", 65)
     // runtime.set_error_stream(limine_terminal)
     // Create the error output stream out of limine terminal
