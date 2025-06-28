@@ -2,6 +2,39 @@
 
 mkdir -p bin/ovmf
 
+echo "==> Checking tools"
+ODIN_VERSION=$(odin version 2> /dev/null)
+if [ $? -ne 0 ]; then
+    echo "!! 'odin' not found"
+    echo "Please install odin from https://github.com/odin-lang/Odin and put it in $PATH"
+    exit 1
+fi
+MAKE_VERSION=$(make --version | head -1 2>/dev/null)
+if [ $? -ne 0 ]; then
+    echo "!! 'make' not found"
+    exit 1
+fi
+SGDISK_VERSION=$(sgdisk --version  | head -1 2>/dev/null)
+if [ $? -ne 0 ]; then
+    echo "!! 'sgdisk' not found"
+    exit 1
+fi
+LD_VERSION=$(ld --version | head -1 2>/dev/null)
+if [ $? -ne 0 ]; then
+    echo "!! 'ld' not found"
+    exit 1
+fi
+NASM_VERSION=$(nasm --version 2>/dev/null)
+if [ $? -ne 0 ]; then
+    echo "!! 'nasm' not found"
+    exit 1
+fi
+echo "* Using $ODIN_VERSION"
+echo "* Using $MAKE_VERSION"
+echo "* Using $SGDISK_VERSION"
+echo "* Using $LD_VERSION"
+echo "* Using $NASM_VERSION"
+
 # Build the limine-deploy script
 echo "==> Building limine"
 cd limine-v3
