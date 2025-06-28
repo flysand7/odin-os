@@ -165,6 +165,16 @@ Type_Info_Bit_Set :: struct {
     upper:      i64,
 }
 
+Type_Info_Bit_Field :: struct {
+    backing_type: ^Type_Info,
+    names:        [^]string     `fmt:"v,field_count"`,
+    types:        [^]^Type_Info `fmt:"v,field_count"`,
+    bit_sizes:    [^]uintptr    `fmt:"v,field_count"`,
+    bit_offsets:  [^]uintptr    `fmt:"v,field_count"`,
+    tags:         [^]string     `fmt:"v,field_count"`,
+    field_count:  int,
+}
+
 Type_Info_Simd_Vector :: struct {
     elem:       ^Type_Info,
     elem_size:  int,
@@ -228,6 +238,7 @@ Type_Info :: struct {
         Type_Info_Enum,
         Type_Info_Map,
         Type_Info_Bit_Set,
+        Type_Info_Bit_Field,
         Type_Info_Simd_Vector,
         Type_Info_Relative_Pointer,
         Type_Info_Relative_Multi_Pointer,

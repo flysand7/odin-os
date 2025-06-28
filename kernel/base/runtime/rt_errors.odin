@@ -12,9 +12,7 @@ import "core:io"
 
 g_error_out: io.IO_Stream
 
-bounds_check_error :: proc "contextless" (file: string, line, column: i32,
-    index, count: int) #no_bounds_check
-{
+bounds_check_error :: proc "contextless" (file: string, line, column: i32, index, count: int) #no_bounds_check {
     if index < count {
         return
     }
@@ -31,9 +29,7 @@ bounds_check_error :: proc "contextless" (file: string, line, column: i32,
     cpu.halt_catch_fire()
 }
 
-multi_pointer_slice_expr_error :: proc "contextless" (file: string, line, column: i32,
-    lo, hi: int) #no_bounds_check
-{
+multi_pointer_slice_expr_error :: proc "contextless" (file: string, line, column: i32, lo, hi: int) #no_bounds_check {
     if lo >= 0 && hi >= 0 || lo <= hi {
         return
     }
@@ -51,9 +47,7 @@ multi_pointer_slice_expr_error :: proc "contextless" (file: string, line, column
     cpu.halt_catch_fire()
 }
 
-slice_expr_error_hi :: proc "contextless" (file: string, line, column: i32,
-    hi: int, len: int) #no_bounds_check
-{
+slice_expr_error_hi :: proc "contextless" (file: string, line, column: i32, hi: int, len: int) #no_bounds_check {
     if hi < len {
         return
     }
@@ -73,9 +67,7 @@ slice_expr_error_hi :: proc "contextless" (file: string, line, column: i32,
     cpu.halt_catch_fire()
 }
 
-slice_expr_error_lo_hi :: proc "contextless" (file: string, line, column: i32,
-    lo, hi: int, len: int) #no_bounds_check
-{
+slice_expr_error_lo_hi :: proc "contextless" (file: string, line, column: i32, lo, hi: int, len: int) #no_bounds_check {
     if lo >= 0 && lo <= hi && hi < len {
         return
     }
@@ -93,9 +85,7 @@ slice_expr_error_lo_hi :: proc "contextless" (file: string, line, column: i32,
     cpu.halt_catch_fire()
 }
 
-dynamic_array_expr_error :: proc "contextless" (file: string, line, column: i32,
-    lo, hi, len: int) #no_bounds_check
-{
+dynamic_array_expr_error :: proc "contextless" (file: string, line, column: i32, lo, hi, len: int) #no_bounds_check {
     if lo >= 0 && lo <= hi && hi < len {
         return
     }

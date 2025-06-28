@@ -12,4 +12,6 @@ I personally know it as breaking the compatibility a lot so I picked up a fairly
 
 - `dosfstools`
 - `make`
+- `nasm`
+- `gptfdisk`
 - probably some stuff like gcc and clang for building limine

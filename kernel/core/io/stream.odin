@@ -3,8 +3,8 @@
 // and other. Some of the streams can be used for error handling in the `runtime` package.
 package stream
 
-import "core:intrinsics"
-// import "core:runtime"
+import "base:intrinsics"
+// import "base:runtime"
 
 Flags_Bits :: enum {
     Read,
